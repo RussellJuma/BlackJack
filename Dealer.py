@@ -45,13 +45,12 @@ class DeckOfCards:
     def shuffle():
         random.shuffle(deck_of_cards)
 
-    card_count = 0
 
-    def pull_card(self, card_count):
+    def pull_card(self):
         card_count = card_count + 1
-        if card_count < len(deck_of_cards):
+        if self.card_count < len(deck_of_cards):
             return deck_of_cards[card_count-1]
-        elif card_count == len(deck_of_cards):
+        elif self.card_count == len(deck_of_cards):
             DeckOfCards.shuffle()
             DeckOfCards.pull_card(0)
 
