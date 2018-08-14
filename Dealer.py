@@ -72,11 +72,11 @@ class Player:
 
     def bet(self, wager):
         while not wager.isdigit():
-            input("Cannot contain letters, must be a digit, try again")
+            input("Bet cannot contain letters, must be a digit, how much?")
 
-        if self.balance - wager >= 0:
-            self.balance = self.balance - wager
-            self.wager = wager
+        self.wager = int(wager)
+        if (self.balance - self.wager) >= 0:
+            self.balance = self.balance - self.wager
             return self.wager
         elif wager == 0:
             print(self.name + " bet $0")
@@ -98,11 +98,12 @@ class Dealer:
 
     def deal_cards():
         for player in players:
-            player.bet(input(player.name + " how much do you want to bet? You have $" + player.balance))
+            print(player.name + "'s Balance $" + str(player.balance))
+            player.bet(input(player.name + " how much do you want to bet?"))
             if player.wager > 0:
                 card_1 = DeckOfCards.pull_card()
                 card_2 = DeckOfCards.pull_card()
-                Player.hand(card_1, card_2, "clear")
+                player.hand(card_1, card_2, "clear")
         card_1 = DeckOfCards.pull_card()
         card_2 = DeckOfCards.pull_card()
         Dealer.hand(card_1, card_2, "clear")
