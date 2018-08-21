@@ -185,11 +185,11 @@ class Dealer:
             elif self.hand_value == player.hand_value:  # Loss - Player Bust #Stand Off
                 player.balance = player.balance + player.wager
                 print(output + player.name + " Stand Off, loses $0")
-
+        players_to_remove = []
         for player in players:
             if player.balance == 0:
                 print(player.name + " have a nice day, you no longer have money to play")
-                players.remove(player)
+                players_to_remove.append(player)
         for player in players:
             while True:
                 response = input(player.name + " do you want to continue? (Y/N) ")
@@ -200,11 +200,14 @@ class Dealer:
             if response == "Y":
                 clear_screen()
             elif response == "N":
-                if player.balance > 500:
+                if player.balance >= 500:
                     print("Have a nice day " + player.name + ", you won $" + str(player.balance - 500) + " for a total of $" + str(player.balance))
                 else:
                     print("Have a nice day " + player.name + ", you lost $" + str(player.balance - 500) + " for a total of $" + str(player.balance))
-                players.remove(player)
+                players_to_remove.append(player)
+
+        for player in players_to_remove:
+            players.remove(player)
 
         if len(players) == 0:
             new_game()
