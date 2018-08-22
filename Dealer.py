@@ -4,7 +4,6 @@ from os import system, name
 players = []
 deck_of_cards = []
 
-
 class Card:
     def __init__(self, name, value):
         self.name = name
@@ -88,21 +87,11 @@ class Player:
             print(self.name + " bet $0")
             return self.wager
         else:
-            Player.bet(input("Not enough funds! You have $" + str(self.balance)))
+            self.bet(input("Not enough funds! " + self.name + " have $" + str(self.balance) + ". How much do you want to bet?"))
 
 
 class Dealer:
     def __init__(self):
-        if len(players) > 1:
-            count = 0
-            names = ""
-            while count < (len(players)-1):
-                names = names + str(players[count].name) + ", "
-                count = count + 1
-            names = names + "and " + str(players[len(players)-1].name)
-        else:
-            names = str(players[0].name)
-        print("Welcome " + names + " to BlackJack!!!")
         self.cards = []
 
     def hand(self, card_1, card_2, reset):
@@ -190,21 +179,21 @@ class Dealer:
             if player.balance == 0:
                 print(player.name + " have a nice day, you no longer have money to play")
                 players_to_remove.append(player)
-        for player in players:
-            while True:
-                response = input(player.name + " do you want to continue? (Y/N) ")
+            else:
+                while True:
+                    response = input(player.name + " do you want to continue? (Y/N) ")
+                    if response == "Y":
+                        break
+                    if response == "N":
+                        break
                 if response == "Y":
-                    break
-                if response == "N":
-                    break
-            if response == "Y":
-                clear_screen()
-            elif response == "N":
-                if player.balance >= 500:
-                    print("Have a nice day " + player.name + ", you won $" + str(player.balance - 500) + " for a total of $" + str(player.balance))
-                else:
-                    print("Have a nice day " + player.name + ", you lost $" + str(player.balance - 500) + " for a total of $" + str(player.balance))
-                players_to_remove.append(player)
+                    clear_screen()
+                elif response == "N":
+                    if player.balance >= 500:
+                        print("Have a nice day " + player.name + ", you won $" + str(player.balance - 500) + " for a total of $" + str(player.balance))
+                    else:
+                        print("Have a nice day " + player.name + ", you lost $" + str(player.balance - 500) + " for a total of $" + str(player.balance))
+                    players_to_remove.append(player)
 
         for player in players_to_remove:
             players.remove(player)
@@ -270,7 +259,19 @@ def new_game():
         players.append(Player(input_name))
         count = count + 1
     DeckOfCards.generate_deck(number_of_players)
+    if len(players) > 1:
+        count = 0
+        names = ""
+        while count < (len(players) - 1):
+            names = names + str(players[count].name) + ", "
+            count = count + 1
+        names = names + "and " + str(players[len(players) - 1].name)
+    else:
+        names = str(players[0].name)
+    print("Welcome " + names + " to BlackJack!!!")
+    dealer.deal_cards()
 
-new_game()
+
 dealer = Dealer()
-dealer.deal_cards()
+new_game()
+
